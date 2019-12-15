@@ -448,7 +448,8 @@ class Brakeman::BaseCheck < Brakeman::SexpProcessor
     elsif call? exp and exp.target.nil? and exp.method == :current_user
       true
     elsif sexp? exp
-      @models.include? class_name(exp)
+      @models.include? class_name(exp) or
+        @models.any? { |m| m.to_s.include?(class_name(exp).to_s) }
     else
       false
     end
